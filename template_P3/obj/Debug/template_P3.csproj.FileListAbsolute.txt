@@ -5,3 +5,6 @@ C:\Users\Wouter\Desktop\Graphics\Practicum 3\template_P3\bin\Debug\OpenTK.dll
 C:\Users\Wouter\Desktop\Graphics\Practicum 3\template_P3\obj\Debug\template_P3.csprojResolveAssemblyReference.cache
 C:\Users\Wouter\Desktop\Graphics\Practicum 3\template_P3\obj\Debug\template_P3.exe
 C:\Users\Wouter\Desktop\Graphics\Practicum 3\template_P3\obj\Debug\template_P3.pdb
+C:\Users\Wouter\Documents\GitHub\Rasterizer\template_P3\bin\Debug\template_P3.exe.config
+C:\Users\Wouter\Documents\GitHub\Rasterizer\template_P3\obj\Debug\template_P3.exe
+C:\Users\Wouter\Documents\GitHub\Rasterizer\template_P3\obj\Debug\template_P3.pdb
