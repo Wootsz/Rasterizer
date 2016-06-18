@@ -10,6 +10,7 @@ public class MeshLoader
 {
     public bool Load( Mesh mesh, string fileName )
     {
+        mesh.children = new List<Mesh>();
         try
         {
             using( StreamReader streamReader = new StreamReader( fileName ) )

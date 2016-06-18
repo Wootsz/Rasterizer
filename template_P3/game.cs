@@ -66,8 +66,9 @@ class Game
 		if (a > 2 * PI) a -= 2 * PI;
 
 		// render scene
-		mesh.Render( shader, transform, wood );
-		floor.Render( shader, transform, wood );
+		SceneGraph.Render( shader, transform, wood, mesh);
+        SceneGraph.Render( shader, transform, wood, floor);
+
 	}
 }
 

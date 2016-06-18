@@ -5,7 +5,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using Template_P3;
 
-namespace template_P3
+namespace Template_P3
 {
     public class SceneGraph
     {
@@ -14,12 +14,13 @@ namespace template_P3
 
         }
 
-        public void Render(Matrix4 matrix, Mesh mesh)
+        public static void Render(Shader shader, Matrix4 matrix, Texture texture, Mesh mesh)
         {
-            Matrix4 newmatrix = matrix * mlocal
-            mesh.Render(newmatrix);
+            mesh.Render(shader, matrix, texture);
+            Matrix4 newMatrix = matrix * mesh.modelView;
+            
             for(int i = 0; i < mesh.children.Count; i++)
-                SceneGraph.Render(newmatrix, mesh.children[0]);
+                SceneGraph.Render(shader, newMatrix, texture, mesh.children[i]);
         }
-    }
 }
+    }

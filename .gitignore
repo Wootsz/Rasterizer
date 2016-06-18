@@ -45,3 +45,7 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+template_P3/bin/Debug/template_P3.exe
+*.pdb
+template_P3/obj/Debug/template_P3.csprojResolveAssemblyReference.cache
+*.exe
