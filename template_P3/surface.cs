@@ -6,7 +6,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
  
-namespace Template_P3 {
+namespace template_P3 {
 
 public class Sprite
 {
@@ -196,4 +196,4 @@ public class Surface
 	}
 }
 
-} // namespace Template_P3
+} // namespace template_P3

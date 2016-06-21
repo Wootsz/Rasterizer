@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
 
-namespace Template_P3 {
+namespace template_P3 {
 
 public class Texture
 {
@@ -28,4 +28,4 @@ public class Texture
 	}
 }
 
-} // namespace Template_P3
+} // namespace template_P3

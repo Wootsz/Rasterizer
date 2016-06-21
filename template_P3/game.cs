@@ -2,35 +2,40 @@
 using OpenTK;
 using System;
 using System.Collections.Generic;
+using template_P3;
 
 // minimal OpenTK rendering framework for UU/INFOGR
 // Jacco Bikker, 2016
 
-namespace Template_P3 {
+namespace template_P3 {
 
 class Game
 {
 	// member variables
-	public Surface screen;					// background surface for printing etc.
-	Mesh mesh, floor;						// a mesh to draw using OpenGL
+	public static Surface screen;					// background surface for printing etc.
+	Mesh mesh, floor;		        		// a mesh to draw using OpenGL
 	const float PI = 3.1415926535f;			// PI
-	float a = 0;							// teapot rotation angle
+	float a = 0, b=0;							// teapot rotation angle
 	Stopwatch timer;						// timer for measuring frame duration
 	Shader shader;							// shader to use for rendering
 	Texture wood;							// texture to use for rendering
-    List<Mesh> meshes;                      // list with all the meshes in the world
+    SceneGraph sceneGraph;
+    Camera camera;
 
 	// initialize
 	public void Init()
 	{
-        // initialize meshes list
-        meshes = new List<Mesh>();
+        sceneGraph = new SceneGraph();
+        camera = new Camera(new Vector3(2, 2, 2), new Vector3(2, 2, 2));
 		// load teapot
 		mesh = new Mesh( "../../assets/teapot.obj" );
 		floor = new Mesh( "../../assets/floor.obj" );
-        floor.children = new List<Mesh>();
-        floor.children.Add(mesh);
-        meshes.Add(floor);
+
+        floor.modelView = new Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        mesh.modelView = new Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+
+        sceneGraph.AddParent(floor);
+        sceneGraph.AddChild(floor, mesh);
 		// initialize stopwatch
 		timer = new Stopwatch();
 		timer.Reset();
@@ -45,7 +50,7 @@ class Game
 	public void Tick()
 	{
 		screen.Clear( 0 );
-		screen.Print( "hitler was right", 2, 2, 0xffff00 );
+        camera.HandleInput();
 	}
 
 	// tick for OpenGL rendering code
@@ -56,20 +61,22 @@ class Game
 		timer.Reset();
 		timer.Start();
 	
-		// prepare matrix for vertex shader
-		Matrix4 transform = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a );
-		transform *= Matrix4.CreateTranslation( 0, -4, -15 );
-		transform *= Matrix4.CreatePerspectiveFieldOfView( 1.2f, 1.3f, .1f, 1000 );
+		//prepare matrix for vertex shader
+        Matrix4 transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, b), a);
+        transform *= Matrix4.CreateTranslation( 0, -4, -15 );
+        transform *= Matrix4.CreatePerspectiveFieldOfView( 1.2f, 1.3f, .1f, 1000 );
+
+        //Matrix4 transform;
+        //transform = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, b), a) * camera.Mcamera() * Matrix4.CreatePerspectiveFieldOfView( 1.2f, 1.3f, .1f, 1000 );
 
 		// update rotation
-		a += 0.001f * frameDuration; 
+        a -= 0.001f * frameDuration; 
 		if (a > 2 * PI) a -= 2 * PI;
 
 		// render scene
-		SceneGraph.Render( shader, transform, wood, mesh);
-        SceneGraph.Render( shader, transform, wood, floor);
-
+        foreach (Mesh m in sceneGraph.children.Keys)
+            sceneGraph.Render( shader, transform, wood, m);
 	}
 }
 
-} // namespace Template_P3
+} // namespace template_P3

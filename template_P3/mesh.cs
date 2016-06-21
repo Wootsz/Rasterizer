@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Template_P3 {
+namespace template_P3 {
 
 // mesh and loader based on work by JTalton; http://www.opentk.com/node/642
 
@@ -19,7 +19,6 @@ public class Mesh
 	int triangleBufferId;					// triangle buffer
 	int quadBufferId;						// quad buffer
     public Matrix4 modelView;               // transform matrix
-    public List<Mesh> children;             // array with the children of this mesh
 
 	// constructor
 	public Mesh( string fileName )
@@ -123,4 +122,4 @@ public class Mesh
 	}
 }
 
-} // namespace Template_P3
+} // namespace template_P3

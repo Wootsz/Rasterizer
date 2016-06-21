@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using OpenTK;
 
-namespace Template_P3 {
+namespace template_P3 {
 
 // mesh and loader based on work by JTalton; http://www.opentk.com/node/642
 
@@ -10,7 +10,6 @@ public class MeshLoader
 {
     public bool Load( Mesh mesh, string fileName )
     {
-        mesh.children = new List<Mesh>();
         try
         {
             using( StreamReader streamReader = new StreamReader( fileName ) )
@@ -37,7 +36,7 @@ public class MeshLoader
         vertices = new List<Vector3>();
         normals = new List<Vector3>();
         texCoords = new List<Vector2>();
-         objVertices = new List<Mesh.ObjVertex>();
+        objVertices = new List<Mesh.ObjVertex>();
         objTriangles = new List<Mesh.ObjTriangle>();
         objQuads = new List<Mesh.ObjQuad>();
         string line;
@@ -139,4 +138,4 @@ public class MeshLoader
     }
 }
 
-} // namespace Template_P3
+} // namespace template_P3

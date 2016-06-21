@@ -5,7 +5,7 @@ using System.Threading;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace Template_P3 {
+namespace template_P3 {
 
 public class OpenTKApp : GameWindow
 {
@@ -21,9 +21,9 @@ public class OpenTKApp : GameWindow
 		GL.Hint( HintTarget.PerspectiveCorrectionHint, HintMode.Nicest );
 		ClientSize = new Size( 640, 400 );
 		game = new Game();
-		game.screen = new Surface( Width, Height );
-		Sprite.target = game.screen;
-		screenID = game.screen.GenTexture();
+		Game.screen = new Surface( Width, Height );
+		Sprite.target = Game.screen;
+		screenID = Game.screen.GenTexture();
 		game.Init();
 	}
 	protected override void OnUnload( EventArgs e )
@@ -62,9 +62,9 @@ public class OpenTKApp : GameWindow
 		GL.Color3( 1.0f, 1.0f, 1.0f );
 		GL.BindTexture( TextureTarget.Texture2D, screenID );
 		GL.TexImage2D( TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, 
-						game.screen.width, game.screen.height, 0, 
+						Game.screen.width, Game.screen.height, 0, 
 						OpenTK.Graphics.OpenGL.PixelFormat.Bgra, 
-						PixelType.UnsignedByte, game.screen.pixels 
+						PixelType.UnsignedByte, Game.screen.pixels 
 						);
 		// GL.Clear( ClearBufferMask.ColorBufferBit ); /* not needed */
 		GL.MatrixMode( MatrixMode.Modelview );
@@ -94,4 +94,4 @@ public class OpenTKApp : GameWindow
 	}
 }
 
-} // namespace Template_P3
+} // namespace template_P3
