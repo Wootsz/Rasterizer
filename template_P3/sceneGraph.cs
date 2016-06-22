@@ -22,26 +22,26 @@ namespace template_P3
             children.Add(mesh, null);
         }
 
-        public void AddChild(Mesh mesh1, Mesh mesh2)
+        public void AddChild(Mesh parent, Mesh child)
         {
-            if (children[mesh1] == null)
+            if (children[parent] == null)
             {
-                List<Mesh> child = new List<Mesh>();
-                child.Add(mesh2);
+                List<Mesh> children2 = new List<Mesh>();
+                children2.Add(child);
             }
             else
-                children[mesh1].Add(mesh2);
-            AddParent(mesh2);
+                children[parent].Add(child);
+            AddParent(child);
         }
 
         public void Render(Shader shader, Matrix4 matrix, Texture texture, Mesh mesh)
         {
-            Matrix4 newMatrix = matrix * mesh.modelView;
+            Matrix4 newMatrix = mesh.modelView * matrix;
             mesh.Render(shader, newMatrix, texture);
-            List<Mesh> childs = children[mesh];
-            if (childs != null)
+            List<Mesh> childz = children[mesh];
+            if (childz != null)
             {
-                foreach (Mesh m in childs)
+                foreach (Mesh m in childz)
                     this.Render(shader, newMatrix, texture, m);
             }
         }

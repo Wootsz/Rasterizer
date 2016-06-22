@@ -2,8 +2,6 @@
 using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace template_P3 {
 
@@ -18,7 +16,7 @@ public class Mesh
 	int vertexBufferId;						// vertex buffer
 	int triangleBufferId;					// triangle buffer
 	int quadBufferId;						// quad buffer
-    public Matrix4 modelView;               // transform matrix
+    public Matrix4 modelView = Matrix4.Identity;               // local matrix
 
 	// constructor
 	public Mesh( string fileName )
