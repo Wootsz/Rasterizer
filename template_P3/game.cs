@@ -14,6 +14,7 @@ class Game
 	// member variables
 	public Surface screen;					// background surface for printing etc.
 	Mesh mesh, floor;						// a mesh to draw using OpenGL
+    Light light1, light2, light3, light4;   // the lights
 	const float PI = 3.1415926535f;			// PI
 	float a = 0;							// teapot rotation angle
 	Stopwatch timer;						// timer for measuring frame duration
@@ -34,6 +35,23 @@ class Game
         sceneGraph = new SceneGraph();
         meshes = new List<Mesh>();
         camera = new Camera();
+        // loading the lights
+        light1 = new Light( new Vector4(0.0f,  1.0f,  2.0f, 1.0f),
+                            new Vector4(1.0f,  1.0f,  1.0f, 1.0f),
+                            new Vector4(1.0f,  1.0f,  1.0f, 1.0f),
+                            new Vector3(0.0f, 1.0f, 0.0f));
+        light2 = new Light( new Vector4(-1.0f, 1.0f, 2.0f, 1.0f),
+                            new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+                            new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+                            new Vector3(0.0f, 1.0f, 0.0f)); 
+        light3 = new Light( new Vector4(-2.0f, 3.0f, 2.0f, 1.0f),
+                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+                             new Vector3(0.0f, 1.0f, 0.0f)); 
+        light4 = new Light( new Vector4(0.0f, 10.0f, 2.0f, 1.0f),
+                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+                             new Vector3(0.0f, 1.0f, 0.0f));
 		// load teapot and floor
 		mesh = new Mesh( "../../assets/teapot.obj" );
 		floor = new Mesh( "../../assets/floor.obj" );
@@ -98,8 +116,8 @@ class Game
 		{
 			// render scene directly to the screen
             foreach (Mesh m in meshes)
-                sceneGraph.Render(shader, transform, wood, m);
-		}
+                sceneGraph.Render(shader, Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a) * camera.cameramatrix * transform, wood, m);
+        }
 	}
 }
 
