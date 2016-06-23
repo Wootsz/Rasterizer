@@ -22,10 +22,10 @@ class Game
 	Texture wood;							// texture to use for rendering
 	RenderTarget target;					// intermediate render target
 	ScreenQuad quad;						// screen filling quad for post processing
-	bool useRenderTarget = true;
-    List<Mesh> meshes;
-    SceneGraph sceneGraph;
-    Camera camera;
+	bool useRenderTarget = true;            
+    List<Mesh> meshes;                      // list with all the parent meshes on the highest layer that need to be rendered
+    SceneGraph sceneGraph;                  // new scenegraph for storing the class hierarchy  
+    Camera camera;                          // new camera, for ... looking around
 
 	// initialize
 	public void Init()
@@ -34,10 +34,10 @@ class Game
         sceneGraph = new SceneGraph();
         meshes = new List<Mesh>();
         camera = new Camera();
-		// load teapot
+		// load teapot and floor
 		mesh = new Mesh( "../../assets/teapot.obj" );
 		floor = new Mesh( "../../assets/floor.obj" );
-        // add the meshes to the hierarchy
+        // add the meshes to the hierarchy and the meshes list
         sceneGraph.AddParent(floor);
         sceneGraph.AddChild(floor, mesh);
         meshes.Add(mesh);
@@ -88,7 +88,7 @@ class Game
 
 			// render scene to render target
             foreach (Mesh m in meshes)
-                sceneGraph.Render(shader, camera.cameramatrix * transform, wood, m);
+                sceneGraph.Render(shader, Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a ) * camera.cameramatrix * transform, wood, m);
 
 			// render quad
 			target.Unbind();
