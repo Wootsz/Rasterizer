@@ -8,25 +8,25 @@ in vec3 vertexpos;				// position of the vertex
 uniform vec3 viewDirection;		// viewDirection
 
 // light variables
-uniform vec4 light1pos;
-uniform vec4 light1dif;
-uniform vec4 light1spec;
-uniform vec3 light1att;
+//uniform vec4 light1pos;
+//uniform vec4 light1dif;
+//uniform vec4 light1spec;
+//uniform vec3 light1att;
 
-uniform vec4 light2pos;
-uniform vec4 light2dif;
-uniform vec4 light2spec;
-uniform vec3 light2att;
+//uniform vec4 light2pos;
+//uniform vec4 light2dif;
+//uniform vec4 light2spec;
+//uniform vec3 light2att;
 
-uniform vec4 light3pos;
-uniform vec4 light3dif;
-uniform vec4 light3spec;
-uniform vec3 light3att;
+//uniform vec4 light3pos;
+//uniform vec4 light3dif;
+//uniform vec4 light3spec;
+//uniform vec3 light3att;
 
-uniform vec4 light4pos;
-uniform vec4 light4dif;
-uniform vec4 light4spec;
-uniform vec3 light4att;
+//uniform vec4 light4pos;
+//uniform vec4 light4dif;
+//uniform vec4 light4spec;
+//uniform vec3 light4att;
 
 // shader output
 out vec4 outputColor;
@@ -41,10 +41,10 @@ struct lightSource
 };
 
 //making the light sources
-lightSource light1 = lightSource(light1pos, light1dif, light1spec, light1att.x, light1att.y, light1att.z);
-lightSource light2 = lightSource(light2pos, light2dif, light2spec, light2att.x, light2att.y, light2att.z);
-lightSource light3 = lightSource(light3pos, light3dif, light3spec, light3att.x, light3att.y, light3att.z);
-lightSource light4 = lightSource(light4pos, light4dif, light4spec, light4att.x, light4att.y, light4att.z);
+lightSource light1 = lightSource(vec4(5.0f, 0.0f, 5.0f, 1.0f), vec4(11.0f, 11.0f, 11.0f, 11.0f), vec4(11.0f, 11.0f, 11.0f, 11.0f), 10.3f, 11.0f, 10.2f);
+lightSource light2 = lightSource(vec4(-5.0f, 0.0f, 5.0f, 1.0f), vec4(11.0f, 11.0f, 11.0f, 11.0f), vec4(11.0f, 11.0f, 11.0f, 11.0f), 10.3f, 11.0f, 10.2f);
+lightSource light3 = lightSource(vec4(-5.0f, 0.0f, -5.0f, 1.0f), vec4(11.0f, 11.0f, 11.0f, 11.0f), vec4(11.0f, 11.0f, 11.0f, 11.0f), 10.3f, 11.0f, 10.2f);
+lightSource light4 = lightSource(vec4(5.0f, 0.0f, 5f, 1.0f), vec4(11.0f, 11.0f, 11.0f, 11.0f), vec4(11.0f, 11.0f, 11.0f, 11.0f), 10.3f, 11.0f, 10.2f);
 
 // materials constructor
 struct material
@@ -58,11 +58,13 @@ struct material
 //making a new material
 material frontMaterial = material(
   vec4(1.0, 1.0, 1.0, 1.0),
-  vec4(1.0, 0.8, 0.8, 1.0),
-  vec4(1.0, 1.0, 1.0, 1.0),
-  5.0
+  vec4(20.0, 20.0, 20.0, 10.0),
+  vec4(20.0, 20.0, 20.0, 20.0),
+  20.0
 );
-vec4 scene_ambient = vec4(1.0, 1.0, 1.0, 1.0);
+
+// set the ambient color
+vec4 scene_ambient = vec4(0.5, 0.5, 0.5, 1.0);
 
 // fragment shader
 void main()
@@ -130,9 +132,9 @@ void main()
       specularReflection4 = attenuation4 * vec3(light4.specularity) * vec3(frontMaterial.specularity) * pow(max(0.0, dot(reflect(-lightDirection4, normalDirection), viewDirection)), frontMaterial.shininess);
     }
   
-  outputColor = (vec4(ambientLighting + 
-    (diffuseReflection1 + diffuseReflection2 + diffuseReflection3 + diffuseReflection4) / 4 + 
-	(specularReflection1 + specularReflection2 + specularReflection3 + specularReflection4) / 4, 1.0) 
-	* texture( pixels, uv ));
+  vec3 diffuseReflection = (diffuseReflection1 + diffuseReflection2 + diffuseReflection3 + diffuseReflection4);
+  vec3 specularReflection = (specularReflection1 + specularReflection2 + specularReflection3 + specularReflection4);
+
+  outputColor = (vec4(ambientLighting + diffuseReflection + specularReflection, 1.0) * texture( pixels, uv ));
 }
 

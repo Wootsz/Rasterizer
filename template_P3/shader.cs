@@ -47,26 +47,26 @@ public class Shader
 		attribute_vuvs = GL.GetAttribLocation( programID, "vUV" );
 		uniform_mview = GL.GetUniformLocation( programID, "transform" );
         uniform_viewdirection = GL.GetUniformLocation( programID, "viewDirection" );
+        
+        //uniform_light1pos = GL.GetUniformLocation(programID, "light1pos");
+        //uniform_light1dif = GL.GetUniformLocation(programID, "light1dif");
+        //uniform_light1spec = GL.GetUniformLocation(programID, "light1spec");
+        //uniform_light1att = GL.GetUniformLocation(programID, "light1att");
 
-        uniform_light1pos = GL.GetUniformLocation(programID, "light1pos");
-        uniform_light1dif = GL.GetUniformLocation(programID, "light1dif");
-        uniform_light1spec = GL.GetUniformLocation(programID, "light1spec");
-        uniform_light1att = GL.GetUniformLocation(programID, "light1att");
+        //uniform_light2pos = GL.GetUniformLocation(programID, "light2pos");
+        //uniform_light2dif = GL.GetUniformLocation(programID, "light2dif");
+        //uniform_light2spec = GL.GetUniformLocation(programID, "light2spec");
+        //uniform_light2att = GL.GetUniformLocation(programID, "light2att");
 
-        uniform_light2pos = GL.GetUniformLocation(programID, "light2pos");
-        uniform_light2dif = GL.GetUniformLocation(programID, "light2dif");
-        uniform_light2spec = GL.GetUniformLocation(programID, "light2spec");
-        uniform_light2att = GL.GetUniformLocation(programID, "light2att");
+        //uniform_light3pos = GL.GetUniformLocation(programID, "light3pos");
+        //uniform_light3dif = GL.GetUniformLocation(programID, "light3dif");
+        //uniform_light3spec = GL.GetUniformLocation(programID, "light3spec");
+        //uniform_light3att = GL.GetUniformLocation(programID, "light3att");
 
-        uniform_light3pos = GL.GetUniformLocation(programID, "light3pos");
-        uniform_light3dif = GL.GetUniformLocation(programID, "light3dif");
-        uniform_light3spec = GL.GetUniformLocation(programID, "light3spec");
-        uniform_light3att = GL.GetUniformLocation(programID, "light3att");
-
-        uniform_light4pos = GL.GetUniformLocation(programID, "light4pos");
-        uniform_light4dif = GL.GetUniformLocation(programID, "light4dif");
-        uniform_light4spec = GL.GetUniformLocation(programID, "light4spec");
-        uniform_light4att = GL.GetUniformLocation(programID, "light4att");
+        //uniform_light4pos = GL.GetUniformLocation(programID, "light4pos");
+        //uniform_light4dif = GL.GetUniformLocation(programID, "light4dif");
+        //uniform_light4spec = GL.GetUniformLocation(programID, "light4spec");
+        //uniform_light4att = GL.GetUniformLocation(programID, "light4att");
 	}
 
 	// loading shaders

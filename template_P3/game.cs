@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -23,10 +24,12 @@ class Game
 	Texture wood;							// texture to use for rendering
 	RenderTarget target;					// intermediate render target
 	ScreenQuad quad;						// screen filling quad for post processing
-	bool useRenderTarget = true;            
+
     List<Mesh> meshes;                      // list with all the parent meshes on the highest layer that need to be rendered
     SceneGraph sceneGraph;                  // new scenegraph for storing the class hierarchy  
     Camera camera;                          // new camera, for ... looking around
+    int t = 4;                              // amount of lights that are on
+    bool holdingTab;                        // speaks for itself i think. used for the light on/off-ness
 
 	// initialize
 	public void Init()
@@ -36,22 +39,10 @@ class Game
         meshes = new List<Mesh>();
         camera = new Camera();
         // loading the lights
-        light1 = new Light(new Vector4(0.0f, 1.0f, 2.0f, 1.0f),
-                            new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                            new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                            new Vector3(0.0f, 1.0f, 0.0f));
-        light2 = new Light(new Vector4(-1.0f, 1.0f, 2.0f, 1.0f),
-                            new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                            new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                            new Vector3(0.0f, 1.0f, 0.0f));
-        light3 = new Light(new Vector4(-2.0f, 3.0f, 2.0f, 1.0f),
-                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                             new Vector3(0.0f, 1.0f, 0.0f));
-        light4 = new Light(new Vector4(0.0f, 10.0f, 2.0f, 1.0f),
-                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                             new Vector3(0.0f, 1.0f, 0.0f));
+        light1 = new Light(new Vector4(100.0f, 11.0f, 12.0f, 1.0f), Vector4.Zero, Vector4.Zero, Vector3.Zero);
+        light2 = new Light(new Vector4(-11.0f, 11.0f, 12.0f, 1.0f), Vector4.Zero, Vector4.Zero, Vector3.Zero);
+        light3 = new Light(new Vector4(-20.0f, -30.0f, 2.0f, 1.0f), Vector4.Zero, Vector4.Zero, Vector3.Zero);
+        light4 = new Light(new Vector4(0.0f, 1.0f, 2.0f, 1.0f), Vector4.Zero, Vector4.Zero, Vector3.Zero);
 		// load teapot and floor
 		mesh = new Mesh( "../../assets/teapot.obj" );
 		floor = new Mesh( "../../assets/floor.obj" );
@@ -68,7 +59,7 @@ class Game
 		shader = new Shader( "../../shaders/vs.glsl", "../../shaders/fs.glsl" );
 		postproc = new Shader( "../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl" );
 		// load a texture
-		wood = new Texture( "../../assets/slime.jpg" );
+		wood = new Texture( "../../assets/wood.jpg" );
 		// create the render target
 		target = new RenderTarget( screen.width, screen.height );
 		quad = new ScreenQuad();
@@ -79,7 +70,56 @@ class Game
 	{
 		screen.Clear( 0 );
         camera.HandleInput();
-	}
+
+        // code for turning the lights on / off
+        // get the keyboard state
+        var keyboard = OpenTK.Input.Keyboard.GetState();
+        // make sure you can't hold tab and change t multiple times
+        if (!keyboard[OpenTK.Input.Key.Tab])
+            holdingTab = false;
+        if (keyboard[OpenTK.Input.Key.Tab] && !holdingTab)
+        {
+            holdingTab = true;
+            t++;
+        }
+
+        // reset t to 0 when you press tab after 4 lights are on
+        if (t > 4)
+            t = 0;
+
+        // turn on / off certain lights based on t
+        if (t > 0)
+        {
+            light1.diffuse = new Vector4(11.0f, 11.0f, 11.0f, 11.0f);
+            light1.specularity = new Vector4(11.0f, 11.0f, 11.0f, 11.0f);
+            light1.attenuation = new Vector3(10.3f, 11.0f, 10.2f);
+        }
+        else { light1.diffuse = Vector4.Zero; light1.specularity = Vector4.Zero; light1.attenuation = Vector3.Zero; }
+
+        if (t > 1)
+        {
+            light2.diffuse = new Vector4(11.0f, 11.0f, 11.0f, 11.0f);
+            light2.specularity = new Vector4(11.0f, 11.0f, 11.0f, 11.0f);
+            light2.attenuation = new Vector3(10.3f, 11.0f, 10.2f);
+        }
+        else { light2.diffuse = Vector4.Zero; light2.specularity = Vector4.Zero; light2.attenuation = Vector3.Zero; }
+
+        if (t > 2)
+        {
+            light3.diffuse = new Vector4(11.0f, 11.0f, 11.0f, 11.0f);
+            light3.specularity = new Vector4(11.0f, 11.0f, 11.0f, 11.0f);
+            light3.attenuation = new Vector3(10.3f, 11.0f, 10.2f);
+        }
+        else { light3.diffuse = Vector4.Zero; light3.specularity = Vector4.Zero; light3.attenuation = Vector3.Zero; }
+
+        if (t > 3)
+        {
+            light4.diffuse = new Vector4(11.0f, 11.0f, 11.0f, 11.0f);
+            light4.specularity = new Vector4(11.0f, 11.0f, 11.0f, 11.0f);
+            light4.attenuation = new Vector3(10.3f, 11.0f, 10.2f);
+        }
+        else { light4.diffuse = Vector4.Zero; light4.specularity = Vector4.Zero; light4.attenuation = Vector3.Zero; }
+    }
 
 	// tick for OpenGL rendering code
 	public void RenderGL()
@@ -90,8 +130,6 @@ class Game
 		timer.Start();
 	
 		// prepare matrix for vertex shader
-		//Matrix4 transform = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a );
-		//transform *= Matrix4.CreateTranslation( 0, -4, -15 );
 		Matrix4 transform = Matrix4.CreatePerspectiveFieldOfView( 1.2f, 1.3f, .1f, 1000 );
 
 		// update rotation
@@ -99,45 +137,40 @@ class Game
 		if (a > 2 * PI) 
             a -= 2 * PI;
 
-		if (useRenderTarget)
-		{
-			// enable render target
-			target.Bind();
+        // enable render target
+        target.Bind();
 
-			// render scene to render target
-            Matrix4 cameraM = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a ) * camera.cameramatrix * transform;
-            foreach (Mesh m in meshes)
-                sceneGraph.Render(shader, cameraM, wood, m);
+        // render scene to render target
+        Matrix4 cameraM = Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a) * camera.cameramatrix * transform;
+        foreach (Mesh m in meshes)
+            sceneGraph.Render(shader, cameraM, wood, m);
 
-            GL.UseProgram(shader.programID);
-            GL.Uniform3(shader.uniform_viewdirection, new Vector3(cameraM.M13, cameraM.M23, cameraM.M33));
-            GL.Uniform4(shader.uniform_light1pos, light1.position);
-            GL.Uniform4(shader.uniform_light1pos, light1.diffuse);
-            GL.Uniform4(shader.uniform_light1pos, light1.specularity);
-            GL.Uniform3(shader.uniform_light1pos, light1.attenuation);
-            GL.Uniform4(shader.uniform_light2pos, light2.position);
-            GL.Uniform4(shader.uniform_light2pos, light2.diffuse);
-            GL.Uniform4(shader.uniform_light2pos, light2.specularity);
-            GL.Uniform3(shader.uniform_light2pos, light2.attenuation); 
-            GL.Uniform4(shader.uniform_light3pos, light3.position);
-            GL.Uniform4(shader.uniform_light3pos, light3.diffuse);
-            GL.Uniform4(shader.uniform_light3pos, light3.specularity);
-            GL.Uniform3(shader.uniform_light3pos, light3.attenuation); 
-            GL.Uniform4(shader.uniform_light4pos, light4.position);
-            GL.Uniform4(shader.uniform_light4pos, light4.diffuse);
-            GL.Uniform4(shader.uniform_light4pos, light4.specularity);
-            GL.Uniform3(shader.uniform_light4pos, light4.attenuation);
+        GL.UseProgram(shader.programID);
+        GL.Uniform3(shader.uniform_viewdirection, new Vector3(cameraM.M13, cameraM.M23, cameraM.M33));
 
-			// render quad
-			target.Unbind();
-			quad.Render( postproc, target.GetTextureID() );
-		}
-		else
-		{
-			// render scene directly to the screen
-            foreach (Mesh m in meshes)
-                sceneGraph.Render(shader, Matrix4.CreateFromAxisAngle(new Vector3(0, 1, 0), a) * camera.cameramatrix * transform, wood, m);
-        }
+        //GL.Uniform4(shader.uniform_light1pos, light1.position);
+        //GL.Uniform4(shader.uniform_light1dif, light1.diffuse);
+        //GL.Uniform4(shader.uniform_light1spec, light1.specularity);
+        //GL.Uniform3(shader.uniform_light1att, light1.attenuation);
+
+        //GL.Uniform4(shader.uniform_light2pos, light2.position);
+        //GL.Uniform4(shader.uniform_light2dif, light2.diffuse);
+        //GL.Uniform4(shader.uniform_light2spec, light2.specularity);
+        //GL.Uniform3(shader.uniform_light2att, light2.attenuation);
+
+        //GL.Uniform4(shader.uniform_light3pos, light3.position);
+        //GL.Uniform4(shader.uniform_light3dif, light3.diffuse);
+        //GL.Uniform4(shader.uniform_light3spec, light3.specularity);
+        //GL.Uniform3(shader.uniform_light3att, light3.attenuation);
+
+        //GL.Uniform4(shader.uniform_light4pos, light4.position);
+        //GL.Uniform4(shader.uniform_light4dif, light4.diffuse);
+        //GL.Uniform4(shader.uniform_light4spec, light4.specularity);
+        //GL.Uniform3(shader.uniform_light4att, light4.attenuation);
+
+        // render quad
+        target.Unbind();
+        quad.Render(postproc, target.GetTextureID());
 	}
 }
 

@@ -11,6 +11,27 @@ out vec2 uv;
 uniform mat4 transform;
 out vec3 vertexpos;
 
+// light variables
+uniform vec4 light1pos;
+uniform vec4 light1dif;
+uniform vec4 light1spec;
+uniform vec3 light1att;
+
+uniform vec4 light2pos;
+uniform vec4 light2dif;
+uniform vec4 light2spec;
+uniform vec3 light2att;
+
+uniform vec4 light3pos;
+uniform vec4 light3dif;
+uniform vec4 light3spec;
+uniform vec3 light3att;
+
+uniform vec4 light4pos;
+uniform vec4 light4dif;
+uniform vec4 light4spec;
+uniform vec3 light4att;
+
 // vertex shader
 void main()
 {
