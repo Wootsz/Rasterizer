@@ -53,7 +53,7 @@ public class Mesh
 		// on first run, prepare buffers
 		Prepare( shader );
 
-		// safety dance
+		// safety dance - men without hats
 		GL.PushClientAttrib( ClientAttribMask.ClientVertexArrayBit );
 
 		// enable texture

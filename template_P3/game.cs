@@ -36,19 +36,19 @@ class Game
         meshes = new List<Mesh>();
         camera = new Camera();
         // loading the lights
-        light1 = new Light( new Vector4(0.0f,  1.0f,  2.0f, 1.0f),
-                            new Vector4(1.0f,  1.0f,  1.0f, 1.0f),
-                            new Vector4(1.0f,  1.0f,  1.0f, 1.0f),
+        light1 = new Light(new Vector4(0.0f, 1.0f, 2.0f, 1.0f),
+                            new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+                            new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
                             new Vector3(0.0f, 1.0f, 0.0f));
-        light2 = new Light( new Vector4(-1.0f, 1.0f, 2.0f, 1.0f),
+        light2 = new Light(new Vector4(-1.0f, 1.0f, 2.0f, 1.0f),
                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
                             new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                            new Vector3(0.0f, 1.0f, 0.0f)); 
-        light3 = new Light( new Vector4(-2.0f, 3.0f, 2.0f, 1.0f),
+                            new Vector3(0.0f, 1.0f, 0.0f));
+        light3 = new Light(new Vector4(-2.0f, 3.0f, 2.0f, 1.0f),
                              new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
                              new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-                             new Vector3(0.0f, 1.0f, 0.0f)); 
-        light4 = new Light( new Vector4(0.0f, 10.0f, 2.0f, 1.0f),
+                             new Vector3(0.0f, 1.0f, 0.0f));
+        light4 = new Light(new Vector4(0.0f, 10.0f, 2.0f, 1.0f),
                              new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
                              new Vector4(1.0f, 1.0f, 1.0f, 1.0f),
                              new Vector3(0.0f, 1.0f, 0.0f));
@@ -68,7 +68,7 @@ class Game
 		shader = new Shader( "../../shaders/vs.glsl", "../../shaders/fs.glsl" );
 		postproc = new Shader( "../../shaders/vs_post.glsl", "../../shaders/fs_post.glsl" );
 		// load a texture
-		wood = new Texture( "../../assets/wood.jpg" );
+		wood = new Texture( "../../assets/slime.jpg" );
 		// create the render target
 		target = new RenderTarget( screen.width, screen.height );
 		quad = new ScreenQuad();
@@ -105,8 +105,28 @@ class Game
 			target.Bind();
 
 			// render scene to render target
+            Matrix4 cameraM = Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a ) * camera.cameramatrix * transform;
             foreach (Mesh m in meshes)
-                sceneGraph.Render(shader, Matrix4.CreateFromAxisAngle( new Vector3( 0, 1, 0 ), a ) * camera.cameramatrix * transform, wood, m);
+                sceneGraph.Render(shader, cameraM, wood, m);
+
+            GL.UseProgram(shader.programID);
+            GL.Uniform3(shader.uniform_viewdirection, new Vector3(cameraM.M13, cameraM.M23, cameraM.M33));
+            GL.Uniform4(shader.uniform_light1pos, light1.position);
+            GL.Uniform4(shader.uniform_light1pos, light1.diffuse);
+            GL.Uniform4(shader.uniform_light1pos, light1.specularity);
+            GL.Uniform3(shader.uniform_light1pos, light1.attenuation);
+            GL.Uniform4(shader.uniform_light2pos, light2.position);
+            GL.Uniform4(shader.uniform_light2pos, light2.diffuse);
+            GL.Uniform4(shader.uniform_light2pos, light2.specularity);
+            GL.Uniform3(shader.uniform_light2pos, light2.attenuation); 
+            GL.Uniform4(shader.uniform_light3pos, light3.position);
+            GL.Uniform4(shader.uniform_light3pos, light3.diffuse);
+            GL.Uniform4(shader.uniform_light3pos, light3.specularity);
+            GL.Uniform3(shader.uniform_light3pos, light3.attenuation); 
+            GL.Uniform4(shader.uniform_light4pos, light4.position);
+            GL.Uniform4(shader.uniform_light4pos, light4.diffuse);
+            GL.Uniform4(shader.uniform_light4pos, light4.specularity);
+            GL.Uniform3(shader.uniform_light4pos, light4.attenuation);
 
 			// render quad
 			target.Unbind();

@@ -9,7 +9,8 @@ in vec3 vPosition;			// untransformed vertex position
 out vec4 normal;			// transformed vertex normal
 out vec2 uv;				
 uniform mat4 transform;
- 
+out vec3 vertexpos;
+
 // vertex shader
 void main()
 {
@@ -19,4 +20,7 @@ void main()
 	// forward normal and uv coordinate; will be interpolated over triangle
 	normal = transform * vec4( vNormal, 0.0f );
 	uv = vUV;
+
+	// the position of the vertex, to give to the fragment shader
+	vertexpos = vec3(transform * vec4(vPosition, 1.0));
 }
